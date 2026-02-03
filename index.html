@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Foreverbloom Schedule</title>
+    <link href="https://fonts.googleapis.com/css2?family=Prompt:wght@300;400;600&display=swap" rel="stylesheet">
+    
+    <style>
+        /* --- CSS: ส่วนตกแต่งความสวยงาม --- */
+        :root {
+            --primary-color: #D4A5A5; /* สีชมพูตุ่นๆ ธีมร้าน */
+            --bg-color: #FFF9F9;      /* พื้นหลังสีขาวอมชมพู */
+            --text-color: #4A4A4A;
+            --success-color: #88C999; /* สีเขียว */
+            --error-color: #E57373;   /* สีแดง */
+            --disabled-color: #BDBDBD;
+        }
+
+        body {
+            font-family: 'Prompt', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .header h1 {
+            color: var(--primary-color);
+            font-size: 1.8rem;
+            margin-bottom: 5px;
+        }
+
+        .header p {
+            font-size: 0.9rem;
+            color: #888;
+        }
+
+        /* กล่องปฏิทิน (Grid) */
+        .schedule-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 15px;
+            width: 100%;
+            max-width: 600px;
+        }
+
+        /* การ์ดแต่ละวัน */
+        .date-card {
+            background: white;
+            padding: 15px 20px;
+            border-radius: 12px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: transform 0.2s;
+        }
+
+        .date-card:hover {
+            transform: translateY(-2px);
+        }
+
+        .date-info {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .date-text {
+            font-weight: 600;
+            font-size: 1.1rem;
+        }
+
+        .delivery-info {
+            font-size: 0.8rem;
+            color: #999;
+            margin-top: 4px;
+        }
+
+        /* ป้ายสถานะ (Badge) */
+        .status-badge {
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: white;
+        }
+
+        /* สีของป้ายสถานะตามเงื่อนไข */
+        .status-available { background-color: var(--success-color); }
+        .status-full { background-color: var(--error-color); }
+        .status-closed { background-color: var(--disabled-color); }
+
+        /* ตัวโหลดหมุนๆ */
+        #loading {
+            margin-top: 50px;
+            color: var(--primary-color);
+        }
+    </style>
+</head>
+<body>
+
+    <div class="header">
+        <h1>Foreverbloom Studio</h1>
+        <p>เช็คคิวว่างเรียลไทม์ 🗓️✨</p>
+    </div>
+
+    <div id="loading">กำลังโหลดคิว... 🌸</div>
+    <div class="schedule-container" id="schedule-list">
+        </div>
+
+    <script>
+        // --- JAVASCRIPT: ส่วนสมอง ---
+        
+        // ⚠️ 1. เอาลิงก์ที่ได้จาก Step ที่แล้ว มาแปะแทนที่ตรงนี้เลยค่ะ! 👇
+        const API_URL = 'https://script.google.com/macros/s/AKfycbyG-BFAjYMeRvfnKe4omqGzVbWGLLE99nFO3Wbh92Qw2AO30Ke11W6I4gMxeGfJpDYj9w/exec'; 
+
+        async function fetchSchedule() {
+            try {
+                const response = await fetch(API_URL);
+                const data = await response.json();
+                
+                displaySchedule(data);
+            } catch (error) {
+                console.error('Error:', error);
+                document.getElementById('loading').innerText = 'โหลดข้อมูลไม่สำเร็จ 😭 กรุณาลองใหม่';
+            }
+        }
+
+        function displaySchedule(data) {
+            const container = document.getElementById('schedule-list');
+            const loading = document.getElementById('loading');
+            
+            // ซ่อนตัวโหลด
+            loading.style.display = 'none';
+
+            // วนลูปสร้างการ์ดแต่ละวัน
+            data.forEach(item => {
+                // สร้าง div การ์ด
+                const card = document.createElement('div');
+                card.className = 'date-card';
+
+                // กำหนดสีป้ายสถานะ
+                let badgeClass = '';
+                let statusText = '';
+                
+                if (item.Status === 'Available') {
+                    badgeClass = 'status-available';
+                    statusText = 'ว่างจองได้ ✅';
+                } else if (item.Status === 'Full') {
+                    badgeClass = 'status-full';
+                    statusText = 'คิวเต็ม ❌';
+                } else {
+                    badgeClass = 'status-closed';
+                    statusText = 'วันส่งของ 🚚';
+                }
+
+                // ใส่เนื้อหา HTML เข้าไป
+                card.innerHTML = `
+                    <div class="date-info">
+                        <span class="date-text">${item.Date}</span>
+                        <span class="delivery-info">
+                            ${item.Status === 'Closed' ? 'งดรับงานวันนี้' : 'รอบส่ง: ' + item.Delivery_Date}
+                        </span>
+                    </div>
+                    <div class="status-badge ${badgeClass}">
+                        ${statusText}
+                    </div>
+                `;
+
+                container.appendChild(card);
+            });
+        }
+
+        // เรียกทำงานทันทีที่เปิดเว็บ
+        fetchSchedule();
+    </script>
+
+</body>
+</html>
