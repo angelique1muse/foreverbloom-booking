@@ -7,7 +7,6 @@
     <link href="https://fonts.googleapis.com/css2?family=Prompt:wght@300;400;600&display=swap" rel="stylesheet">
     
     <style>
-        /* --- CSS: ส่วนตกแต่งความสวยงาม --- */
         :root {
             --primary-color: #D4A5A5; /* สีชมพูตุ่นๆ ธีมร้าน */
             --bg-color: #FFF9F9;      /* พื้นหลังสีขาวอมชมพู */
@@ -118,9 +117,6 @@
         </div>
 
     <script>
-        // --- JAVASCRIPT: ส่วนสมอง ---
-        
-        // ⚠️ 1. เอาลิงก์ที่ได้จาก Step ที่แล้ว มาแปะแทนที่ตรงนี้เลยค่ะ! 👇
         const API_URL = 'https://script.google.com/macros/s/AKfycbyG-BFAjYMeRvfnKe4omqGzVbWGLLE99nFO3Wbh92Qw2AO30Ke11W6I4gMxeGfJpDYj9w/exec'; 
 
         async function fetchSchedule() {
@@ -163,7 +159,7 @@
                     statusText = 'วันส่งของ 🚚';
                 }
 
-                // ใส่เนื้อหา HTML เข้าไป
+                // 
                 card.innerHTML = `
                     <div class="date-info">
                         <span class="date-text">${item.Date}</span>
@@ -180,7 +176,7 @@
             });
         }
 
-        // เรียกทำงานทันทีที่เปิดเว็บ
+        //
         fetchSchedule();
     </script>
 
