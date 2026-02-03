@@ -7,6 +7,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Prompt:wght@300;400;600&display=swap" rel="stylesheet">
     
     <style>
+        /* --- CSS: ส่วนตกแต่งความสวยงาม --- */
         :root {
             --primary-color: #D4A5A5; /* สีชมพูตุ่นๆ ธีมร้าน */
             --bg-color: #FFF9F9;      /* พื้นหลังสีขาวอมชมพู */
@@ -31,15 +32,22 @@
             text-align: center;
             margin-bottom: 30px;
         }
+        .site-logo {
+            width: 300px; /* ปรับขนาดความกว้างตามชอบ */
+            height: auto; /* ให้สูงตามสัดส่วน */
+            margin-bottom: 5px; /* เว้นระยะห่างจากชื่อร้าน */
+            border-radius: 50%; /* ถ้าอยากให้รูปเป็นวงกลม ใส่บรรทัดนี้ (ถ้าไม่เอาลบทิ้งได้) */
+        }
 
         .header h1 {
             color: var(--primary-color);
-            font-size: 1.8rem;
+            font-size: 2.5rem;
+            margin-top: 0;
             margin-bottom: 5px;
         }
 
         .header p {
-            font-size: 0.9rem;
+            font-size: 1.2rem;
             color: #888;
         }
 
@@ -75,7 +83,7 @@
 
         .date-text {
             font-weight: 600;
-            font-size: 1.1rem;
+            font-size: 1.2rem;
         }
 
         .delivery-info {
@@ -86,9 +94,9 @@
 
         /* ป้ายสถานะ (Badge) */
         .status-badge {
-            padding: 6px 12px;
+            padding: 8px 16px;
             border-radius: 20px;
-            font-size: 0.85rem;
+            font-size: 1rem;
             font-weight: 600;
             color: white;
         }
@@ -108,6 +116,8 @@
 <body>
 
     <div class="header">
+        <img src="logo.png" alt="Logo" class="site-logo"> 
+        
         <h1>Foreverbloom Studio</h1>
         <p>เช็คคิวว่างเรียลไทม์ 🗓️✨</p>
     </div>
@@ -117,6 +127,8 @@
         </div>
 
     <script>
+        // --- JAVASCRIPT ---
+        
         const API_URL = 'https://script.google.com/macros/s/AKfycbyG-BFAjYMeRvfnKe4omqGzVbWGLLE99nFO3Wbh92Qw2AO30Ke11W6I4gMxeGfJpDYj9w/exec'; 
 
         async function fetchSchedule() {
@@ -159,7 +171,7 @@
                     statusText = 'วันส่งของ 🚚';
                 }
 
-                // 
+                // ใส่เนื้อหา HTML เข้าไป
                 card.innerHTML = `
                     <div class="date-info">
                         <span class="date-text">${item.Date}</span>
@@ -176,7 +188,7 @@
             });
         }
 
-        //
+        // เรียกทำงานทันทีที่เปิดเว็บ
         fetchSchedule();
     </script>
 
